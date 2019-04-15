@@ -21,6 +21,8 @@ Run the "run_analysis.R" script, which will do the following
 		[melt]
 * Create human readable text
 		[sub]
+* Create aggregated data set
+		[aggregate]
 * Output file
 		[write.table]
 		
