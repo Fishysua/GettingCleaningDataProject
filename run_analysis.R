@@ -33,4 +33,5 @@ TallData$feature <- sub("gravity","Gravity",TallData$feature)
 
 #Write Output to file
 TidyData <- TallData
+TinyTidyData <- aggregate(TidyData$value, by = list(TidyData$ActivityName, TidyData$SubjectID, TidyData$feature), FUN = mean)
 write.table(TidyData, file = "TidyData.txt", row.names = FALSE)
