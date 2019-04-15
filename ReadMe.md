@@ -23,3 +23,5 @@ Run the "run_analysis.R" script, which will do the following
 		[sub]
 * Output file
 		[write.table]
+		
+The results of this process where submitted separately
