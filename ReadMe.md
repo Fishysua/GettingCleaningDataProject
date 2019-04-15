@@ -6,19 +6,20 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
 Unzip the file folder "UCI HAR Dataset" into your working directory
 
 Run the "run_analysis.R" script, which will do the following
-	* Load the libraries you require 
+
+* Load the libraries you require 
 		[data.table]
-	* Load the necessary labels
+* Load the necessary labels
 		[read.table]
-	* Load the Test Data and the Training Data
+* Load the Test Data and the Training Data
 		[read.table]
-	* Apply the labels
+* Apply the labels
 		[cbind]
-	* Append the tables
+* Append the tables
 		[rbind]
-	* Reshape table to 4 fields
+* Reshape table to 4 fields
 		[melt]
-	* Create human readable text
+* Create human readable text
 		[sub]
-	* Output file
+* Output file
 		[write.table]
