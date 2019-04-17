@@ -1,6 +1,19 @@
 #Load Librarys
 library(data.table)
 
+filename <- "UCI HAR Dataset.zip"
+
+#Download Files
+if (!file.exists(filename)){
+  fileURL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip "
+  download.file(fileURL, filename, method="curl")
+}  
+
+#Unzip Files
+if (!file.exists("UCI HAR Dataset")) { 
+  unzip(filename) 
+}
+
 #Load files
 FeatureNames <- read.table("UCI HAR Dataset/features.txt", sep = " ")
 ActivityLabels <- read.table("UCI HAR Dataset/activity_labels.txt", col.names = c("ActivityNumber", "ActivityName"))
@@ -19,19 +32,19 @@ TrainingData <- cbind(SubjectTraining, TrainingData)
 MasterData <- rbind(TestData, TrainingData)
 MasterData <- merge(ActivityLabels,MasterData)
 
-#One Observation per row
-TallData <- melt(MasterData, id = c("ActivityName", "SubjectID"), measure.vars = grep("mean|std", names(MasterData)),variable.name = "feature")
+MasterData <- MasterData[grep("Name|Subject|mean|std", names(MasterData))]
 
 #Human Readable Text
-TallData$feature <- sub("^t","TimeDomain",TallData$feature)
-TallData$feature <- sub("^f","FrequencyDomain",TallData$feature)
-TallData$feature <- sub("Acc","Accelerometer",TallData$feature)
-TallData$feature <- sub("Gyro","Gyroscope",TallData$feature)
-TallData$feature <- sub("Mag","Magnitude",TallData$feature)
-TallData$feature <- sub("gravity","Gravity",TallData$feature)
+names(MasterData) <- sub("^t","TimeDomain",names(MasterData))
+names(MasterData) <- sub("^f","FrequencyDomain",names(MasterData))
+names(MasterData) <- sub("Acc","Accelerometer",names(MasterData))
+names(MasterData) <- sub("Gyro","Gyroscope",names(MasterData))
+names(MasterData) <- sub("Mag","Magnitude",names(MasterData))
+names(MasterData) <- sub("gravity","Gravity",names(MasterData))
 
 
 #Write Output to file
-TidyData <- TallData
-TinyTidyData <- aggregate(TidyData$value, by = list(TidyData$ActivityName, TidyData$SubjectID, TidyData$feature), FUN = mean)
+TidyData <- aggregate(MasterData[grep("mean|std", names(MasterData))], by = list(MasterData$ActivityName, MasterData$SubjectID), FUN = mean)
+names(TidyData) <- sub("Group.1", "ActivityName", names(TidyData))
+names(TidyData) <- sub("Group.2", "SubjectID", names(TidyData))
 write.table(TidyData, file = "TidyData.txt", row.names = FALSE)
