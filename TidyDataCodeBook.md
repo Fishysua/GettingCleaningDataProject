@@ -23,6 +23,7 @@ The other variables are each headed by a collection of identifiers for what the 
 * X/Y/Z/Magnitude, identifies the direction of the acceleration in the 3-axial inertial frame (X, Y, or Z) or the magnitude in the direction of the acceleration itself (Magnitude)
 * mean/std, indicateds if the value is the mean of a mean or a standard deviation
  
+The full list of measured values is here.
 
 * "TimeDomainBodyAccelerometer.mean...X"
 * "TimeDomainBodyAccelerometer.mean...Y"
