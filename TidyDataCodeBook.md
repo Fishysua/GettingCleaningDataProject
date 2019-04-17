@@ -1,36 +1,30 @@
-#Load Librarys
-library(data.table)
+Tidy Data Project Code Book
 
-#Load files
-FeatureNames <- read.table("UCI HAR Dataset/features.txt", sep = " ")
-ActivityLabels <- read.table("UCI HAR Dataset/activity_labels.txt", col.names = c("ActivityNumber", "ActivityName"))
-TestLabels <- read.table("UCI HAR Dataset/test/y_test.txt", sep = " ", col.names = "ActivityNumber")
-SubjectTest <- read.table("UCI HAR Dataset/test/subject_test.txt", col.names = "SubjectID")
-TestData <- read.table("UCI HAR Dataset/test/X_test.txt", col.names = FeatureNames$V2)
-TrainingLabels <- read.table("UCI HAR Dataset/train/y_train.txt", sep = " ", col.names = "ActivityNumber")
-SubjectTraining <- read.table("UCI HAR Dataset/train/subject_train.txt", col.names = "SubjectID")
-TrainingData <- read.table("UCI HAR Dataset/train/X_train.txt", col.names = FeatureNames$V2)
+=================
 
-#Merge Files
-TestData <- cbind(TestLabels, TestData)
-TestData <- cbind(SubjectTest, TestData)
-TrainingData <- cbind(TrainingLabels, TrainingData)
-TrainingData <- cbind(SubjectTraining, TrainingData)
-MasterData <- rbind(TestData, TrainingData)
-MasterData <- merge(ActivityLabels,MasterData)
+The TidyData.txt file has one table with 813621 values described by four variables 
+	* ActivityName
+	* SubjectID
+	* feature
+	* value
 
-#One Observation per row
-TallData <- melt(MasterData, id = c("ActivityName", "SubjectID"), measure.vars = grep("mean|std", names(MasterData)),variable.name = "feature")
+ActivityName is the name of the activity for which the value was reported, 6 different values
+	* WALKING
+	* WALKING_UPSTAIRS
+	* WALKING_DOWNSTAIRS
+	* SITTING
+	* STANDING
+	* LAYING
 
-#Human Readable Text
-TallData$feature <- sub("^t","TimeDomain",TallData$feature)
-TallData$feature <- sub("^f","FrequencyDomain",TallData$feature)
-TallData$feature <- sub("Acc","Accelerometer",TallData$feature)
-TallData$feature <- sub("Gyro","Gyroscope",TallData$feature)
-TallData$feature <- sub("Mag","Magnitude",TallData$feature)
-TallData$feature <- sub("gravity","Gravity",TallData$feature)
+SubjectID is the individual, among 30, for whom the value was reported
 
+feature is a collection of identifiers for what the measurement is and how it was measured
+	* Time/Frequency Domain, identifies if the data is based on raw captured data (Time) or the Fast Fourier Transform of that data (Frequency)
+	* Body/Gravity, identifies if the acceleration identified was attributed to the body or to gravity by a low pass Butterworth filter
+	* Accelerometer/Gyroscope, identifies if the value was measured by the device's accelerometer or the gyroscope
+	* X/Y/Z/Magnitude, identifies the direction of the acceleration in the 3-axial inertial frame (X, Y, or Z) or the magnitude in the direction of the acceleration itself (Magnitude)
+	* Angle, indicates the value measures the angle between the identified values
+	* mean/std, indicateds if the value is a mean or standard deviation
 
-#Write Output to file
-TidyData <- TallData
-write.table(TidyData, file = "TidyData.txt", row.names = FALSE)
+value is the signal for the characteristics identified
+ 
